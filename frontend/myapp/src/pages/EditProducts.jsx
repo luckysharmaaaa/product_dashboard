@@ -29,10 +29,11 @@ function EditProducts() {
 
   const fetchProducts = async () => {
     try {
-      const res = await axios.get("API_BASE_URL/products/all");
+      // FIX: Changed to backticks for proper variable interpolation
+      const res = await axios.get(`${API_BASE_URL}/products/all`);
       setProducts(res.data.data || []);
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching products:", error);
     }
   };
 
@@ -56,7 +57,8 @@ function EditProducts() {
   const addProduct = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("API_BASE_URL/products/add", form, {
+      // FIX: Changed to backticks
+      await axios.post(`${API_BASE_URL}/products/add`, form, {
         headers: { Authorization: token },
       });
       alert("Product Added Successfully");
@@ -70,7 +72,8 @@ function EditProducts() {
   const deleteProduct = async (id) => {
     if (!window.confirm("Are you sure you want to delete this asset?")) return;
     try {
-      await axios.delete(`API_BASE_URL/products/delete/${id}`, {
+      // FIX: Changed to backticks
+      await axios.delete(`${API_BASE_URL}/products/delete/${id}`, {
         headers: { Authorization: token },
       });
       alert("Product Deleted Successfully");
@@ -98,7 +101,8 @@ function EditProducts() {
   const updateProduct = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`API_BASE_URL/products/update/${editId}`, form, {
+      // FIX: Changed to backticks
+      await axios.put(`${API_BASE_URL}/products/update/${editId}`, form, {
         headers: { Authorization: token },
       });
       alert("Product Updated Successfully");
@@ -154,7 +158,8 @@ function EditProducts() {
 
         {/* INPUT FORM FIELD EXTENSIONS */}
         <div className="max-w-4xl mx-auto relative">
-          <form onSubmit={editId ? updateProduct : addProduct} className={`p-6 sm:p-8 rounded-2xl bg-slate-900/40 backdrop-blur-xl border space-y-5 ${editId ? "border-amber-500/30" : "border-slate-900"}`}>
+          {/* FIX: Set a fallback border class if editId is not active to prevent flashing layouts */}
+          <form onSubmit={editId ? updateProduct : addProduct} className={`p-6 sm:p-8 rounded-2xl bg-slate-900/40 backdrop-blur-xl border space-y-5 ${editId ? "border-amber-500/30" : "border-slate-800"}`}>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <input type="text" name="name" placeholder="Product Name" value={form.name} onChange={handleChange} required className="w-full bg-slate-950/60 border border-slate-800 focus:border-blue-500 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 outline-none transition-all" />
@@ -180,7 +185,8 @@ function EditProducts() {
             <input type="text" name="image" placeholder="Image URL" value={form.image} onChange={handleChange} required className="w-full bg-slate-950/60 border border-slate-800 focus:border-blue-500 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 outline-none transition-all" />
             <textarea name="description" placeholder="Product Specifications / Description" value={form.description} onChange={handleChange} rows="3" className="w-full bg-slate-950/60 border border-slate-800 focus:border-blue-500 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 outline-none transition-all resize-none"></textarea>
 
-            <button type="submit" className={`w-full font-semibold tracking-wide text-sm py-3.5 rounded-xl inline-flex items-center justify-center gap-2 transition-all duration-300 hover:-translate-y-0.5 text-white ${editId ? "bg-linear-to-r from-amber-600 to-orange-600" : "bg-linear-to-r from-blue-600 to-indigo-600"}`}>
+            {/* FIX: Corrected gradient classes from bg-linear-to-r to bg-gradient-to-r */}
+            <button type="submit" className={`w-full font-semibold tracking-wide text-sm py-3.5 rounded-xl inline-flex items-center justify-center gap-2 transition-all duration-300 hover:-translate-y-0.5 text-white ${editId ? "bg-gradient-to-r from-amber-600 to-orange-600" : "bg-gradient-to-r from-blue-600 to-indigo-600"}`}>
               {editId ? <><RefreshCw size={16} /> Update Product Parameters</> : <><PlusCircle size={16} /> Commit New Product Entry</>}
             </button>
           </form>
